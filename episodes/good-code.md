@@ -20,36 +20,86 @@ exercises: 60
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Coding conventions and style guides
+## Coding formatting and linting
 
 Readable code - for others and our future selves - should be descriptive, cleanly 
 and consistently formatted, and use sensible, descriptive names for variables, functions 
-and modules.  
+and modules. Furthermore, our code should be efficient and well designed.
 
-In order to help us format our code, we can follow guidelines known as a style guide. 
-A style guide is a set of conventions that we agree upon with our colleagues
-or community, to ensure that people produce code which looks similar in style.
-The most important thing about a style guide is that it provides consistency, making 
-code easier to read and also easier to write - because you need to make fewer decisions.
+Programs called formatters and linters can help us with the above. What do they 
+do and how do they differ?
+
+### Formatters
+
+With a light touch, formatters ensure the code adheres to standard style guides without altering 
+functionality. A style guide is a set of conventions that we agree upon with our 
+colleagues or community, to ensure that people produce code which looks similar 
+in style. For examples, check out the [PEP 8 Style Guide](https://peps.python.org/pep-0008/) or 
+the [Tidyverse style guide](https://style.tidyverse.org/) for Python and R, respectively.
+
+Good, consistent formatting makes the code easier to read and can prevent merge 
+conflicts.
+
+### Linters
+
+The work of "linters" is a bit more heavy-handed. These programs can check your code 
+for common programming errors, convoluted syntax, unnecessary complexity, unused code, 
+performance bottlenecks and other violations of best practices. Often they can fix the 
+issues they encounter, or suggest appropriate improvements otherwise.
+
+### Improving your code
 
 ::: challenge
 
+Install and use a formatter and a linter to improve the style of your code.
+
 ::: tab
-### Python style guide
-Head over to [this lesson about the Python style guide](https://carpentries-incubator.github.io/python-intermediate-development/15-coding-conventions.html#python-coding-style-guide){target="_blank"}.  
+### Python
+[The program `ruff`](https://github.com/astral-sh/ruff) can both format _and_ lint 
+Python code. [Install `ruff`](https://docs.astral.sh/ruff/installation/) from PyPI 
+or conda. Don't forget to add it to your `requirements.txt`, `pyproject.toml` or 
+whichever file you use to define your dependencies.
 
-Then take a look at (a part of) your own Python script, and identify where the guidelines 
-have not been followed. Check the following:
+**Formatting**
 
-- [Indentation](https://carpentries-incubator.github.io/python-intermediate-development/15-coding-conventions#indentation){target="_blank"}
-- [Whitespace in Expressions and Statements](https://carpentries-incubator.github.io/python-intermediate-development/15-coding-conventions#whitespace-in-expressions-and-statements){target="_blank"}
-- [Naming conventions](https://carpentries-incubator.github.io/python-intermediate-development/15-coding-conventions#naming-conventions){target="_blank"}
-- [Comments](https://carpentries-incubator.github.io/python-intermediate-development/15-coding-conventions#comments){target="_blank"}
+First, use the formatter. Note that the use without the `--check` flag `ruff` 
+automatically changes your file. This is the default, because formatting does 
+not change the behaviour of your code.
 
-Fix the discovered inconsistencies and commit them to your working branch on GitHub.
+```bash
+# Check for formatting
+ruff format --check
 
-### R (Tidyverse) style guide
-Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
+# Fix formatting, if desired
+ruff format
+```
+
+Do you agree with the default choices `ruff` made? You can 
+[configure](https://docs.astral.sh/ruff/tutorial/#configuration) `ruff` to follow 
+your choices if you need to, but be aware that the defaults were chosen for a reason.
+
+**Linting**
+
+Next, try out the linter. While fixing formatting is usually harmless, linting 
+fixes change your code on a deeper level. By default, `ruff` only advises you. 
+To automatically apply the linting, you need an explicit `--fix` flag. This is 
+because linting can touch the functionality of your code, so make sure to review 
+the changes `ruff` makes.
+
+```bash
+# Check for linting
+ruff check
+
+# Fix linting, if desired
+ruff check --fix
+```
+
+What is your opinion on the linting suggestions? Again, you can 
+[configure](https://docs.astral.sh/ruff/tutorial/#configuration) the details `ruff` 
+pays attention to when linting. Did you learn something new about the Python language?
+
+### R
+<!-- Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
 
 Then take a look at (a part of) your own R script, and identify where the guidelines 
 have not been followed. Check the following:
@@ -62,9 +112,133 @@ naming conventions
 
 Fix the discovered inconsistencies and commit them to your working branch on GitHub.
 You can use the [styler](https://styler.r-lib.org/){target="_blank"} (with RStudio add-in) and [lintr](https://github.com/r-lib/lintr){target="_blank"}
-packages to (re-)style your code.
+packages to (re-)style your code. -->
+
+https://www.datanovia.com/en/blog/r-coding-style-best-practices/
+
+https://rfortherestofus.com/2024/03/styler-package
 
 :::
+
+:::
+
+### (Optional) Git pre-commit hooks
+
+So far, formatting and linting were conscious choices: you have to remember to execute 
+them yourself every once in a while. A more robust approach would be to take away this 
+mental load and automate linting and formatting. This can be achieved through "git hooks", 
+which are a set of scripts `git` can run every time a certain action is performed. Here 
+we have a look at "pre-commit hooks" that check your code changes _before_ you commit them.
+
+::: challenge
+
+The amount of git pre-commit hook scripts can grow rather large on 
+bigger projects. `pre-commit` manages your commit hooks and helper programs in a 
+declarative way and makes them easy to share between collaborators.
+
+Use a `git` pre-commit hook to run formatters and linters every time before a `git commit`.
+
+::: tab
+### Python
+Install [pre-commit](https://pre-commit.com/) and add it to your `requirements.txt` or 
+`pyproject.toml`.
+
+Create a `pre-commit` config file named `.pre-commit-config.yaml`.
+
+```yaml
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.14.8
+  hooks:
+    # Run the linter.
+    - id: ruff-check
+      # Possible choices: [ python, pyi, jupyter ]
+      # Here we exclude Jupyter notebooks
+      types_or: [ python, pyi ]
+
+      # Comment _out_ to only check, not fix
+      args: [ --fix ]
+
+    # Run the formatter.
+    - id: ruff-format
+
+      # Comment _in_ to only check, not fix
+      # args: [ --check ]
+
+      # Possible choices: [ python, pyi, jupyter ]
+      # Here we exclude Jupyter notebooks
+      types_or: [ python, pyi ]
+```
+
+If you would want to run additional checks, you need to add a new `- repo:` entry 
+to the `pre-commit` config file.
+
+Make sure to add and commit this file to your `git` repository, so your collaborators 
+will use the exact same configurations and versions.
+
+```bash
+git add .pre-commit-config.yaml
+git commit -m "add pre-commit hook for formatting and linting"
+```
+
+Install the new git hook.
+
+```bash
+pre-commit install
+```
+
+You can test your script by executing it manually.
+
+```bash
+pre-commit run --all-files
+```
+
+For updating your hooks to the latest version, run
+
+```bash
+pre-commit autoupdate
+```
+
+and make sure to add and commit your updated config file.
+
+### R
+<!-- Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
+
+Then take a look at (a part of) your own R script, and identify where the guidelines 
+have not been followed. Check the following:
+
+- [Indentation](https://style.tidyverse.org/functions.html#multi-line-function-definitions){target="_blank"}
+- [Spacing](https://style.tidyverse.org/syntax.html#spacing){target="_blank"}
+- [File](https://style.tidyverse.org/files.html){target="_blank"} and [object](https://style.tidyverse.org/syntax.html){target="_blank"} 
+naming conventions
+- [Comments](https://style.tidyverse.org/functions.html#comments){target="_blank"}
+
+Fix the discovered inconsistencies and commit them to your working branch on GitHub.
+You can use the [styler](https://styler.r-lib.org/){target="_blank"} (with RStudio add-in) and [lintr](https://github.com/r-lib/lintr){target="_blank"}
+packages to (re-)style your code. -->
+
+https://www.r-bloggers.com/2022/09/enforcing-style-in-an-r-project/
+
+:::
+
+**Further reading: CI/CD**
+
+We went from running formatting and linting locally to automating the checks for 
+every commit. This still leaves a margin for error since your collaborators will 
+need to set up the git hooks first. The next line of defense against messy contributions 
+is CI/CD (Continuous Integration / Continuous Delivery).
+
+It goes beyond the scope of this module, but you can set up your remote repository 
+such that every push (or pull/merge request) triggers a set of checks. For GitHub it 
+is named [GitHub Actions](https://docs.github.com/en/actions), while GitLab just calls 
+it [CI/CD](https://docs.gitlab.com/ci/).
+
+Usually the tools you use will supply instructions on how to run them in this automated way. 
+Check out [`ruff` integrations](https://docs.astral.sh/ruff/integrations/) for Python, 
+or [`lintr` integrations](https://github.com/r-lib/lintr/?tab=readme-ov-file#setting-up-github-actions) 
+and [`styler` integrations](https://github.com/r-lib/actions/tree/v2-branch/examples#style-package) for R.
+
 
 :::
 
