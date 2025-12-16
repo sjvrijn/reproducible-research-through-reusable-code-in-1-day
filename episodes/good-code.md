@@ -99,23 +99,45 @@ What is your opinion on the linting suggestions? Again, you can
 pays attention to when linting. Did you learn something new about the Python language?
 
 ### R
-<!-- Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
 
-Then take a look at (a part of) your own R script, and identify where the guidelines 
-have not been followed. Check the following:
+The standard option for [formatting R code is `styler`](http://styler.r-lib.org/), for [linting it's `lintr`](https://lintr.r-lib.org/).
 
-- [Indentation](https://style.tidyverse.org/functions.html#multi-line-function-definitions){target="_blank"}
-- [Spacing](https://style.tidyverse.org/syntax.html#spacing){target="_blank"}
-- [File](https://style.tidyverse.org/files.html){target="_blank"} and [object](https://style.tidyverse.org/syntax.html){target="_blank"} 
-naming conventions
-- [Comments](https://style.tidyverse.org/functions.html#comments){target="_blank"}
+```R
+# Install the formatter and linter.
+install.packages(c("styler", "lintr"))
+```
 
-Fix the discovered inconsistencies and commit them to your working branch on GitHub.
-You can use the [styler](https://styler.r-lib.org/){target="_blank"} (with RStudio add-in) and [lintr](https://github.com/r-lib/lintr){target="_blank"}
-packages to (re-)style your code. -->
+If the installation fails due to a missing `libxml-2.0` library, install it first (it's called `libxml2-dev` in Ubuntu) and re-run the installation.
 
-https://www.datanovia.com/en/blog/r-coding-style-best-practices/
+**Formatting**
 
+You will notice that both new packages are listed under the "Addins" menu in RStudio. Open an R file and use
+
+```
+Addins ➜ STYLER ➜ "Style active file".
+```
+
+Do you agree with the default choices that `styler` made? You can [configure](https://styler.r-lib.org/articles/styler.html#invasiveness) `styler` to follow your choices if you need to, but be aware that the defaults were chosen for a reason. You can also configure it under
+
+```
+Addins ➜ STYLER ➜ "Set style".
+```
+
+**Linting**
+
+Next, try out the linter with
+
+```
+Addins ➜ LINTR ➜ "Lint current file".
+```
+
+While fixing formatting is usually harmless, linting fixes change your code on a deeper level. Make sure to review the changes `lintr` makes.
+
+What is your opinion on the linting suggestions? Again, you can [configure](https://lintr.r-lib.org/#usage) the details `lintr` pays attention to when linting. Did you learn something new about the R language?
+
+**Further reading: R Coding Style**
+
+https://www.datanovia.com/en/blog/r-coding-style-best-practices/<br>
 https://rfortherestofus.com/2024/03/styler-package
 
 :::
