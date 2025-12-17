@@ -7,7 +7,7 @@ exercises: 60
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - Why should you follow software code style conventions?
-- What code style conventions can you use in Python and R?
+- How can formatters and linters help you with this in Python and R?
 - How can nested code be targeted and improved through modularization?
 - How can I write a new function in R?
 
