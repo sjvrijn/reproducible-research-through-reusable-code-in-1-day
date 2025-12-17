@@ -226,12 +226,13 @@ and make sure to add and commit your updated config file.
 
 ### R
 
-Install the package `precommit` and initialize it. ⚠️ This package is only supported 
-on operating systems that are also officially supported by R. Please check the 
-[R Download page](https://cran.rstudio.org/) which ones are eligible. Non 
-long-term-stable (LTS) Ubuntu distributions, for example, are not. Installing and 
-running `precommit` on non-supported operating systems will probably require 
-extra manual work.
+Install the package `precommit` and initialize it.
+
+⚠️ This package is only supported on operating systems that are also officially 
+supported by R. Please check the [R Download page](https://cran.rstudio.org/) which 
+ones are eligible. Non long-term-stable (LTS) Ubuntu distributions, for example, are 
+not. Installing and running `precommit` on non-supported operating systems will 
+probably require extra manual work.
 
 ```R
 install.packages("precommit")
@@ -310,7 +311,7 @@ ci:
     autoupdate_schedule: monthly
 ```
 
-You can comment out `-  repo:`- or `-  id:` stanzas if you don't want them, or add new 
+You can comment out `repo` or `id` stanzas if you don't want them, or add new 
 ones if you want more checks to happen before you commit files.
 
 <!-- Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
@@ -332,11 +333,11 @@ https://www.r-bloggers.com/2022/09/enforcing-style-in-an-r-project/
 
 :::
 
-:::
-
 ⚠️ Failed pre-commit checks will also fail the commit! Make sure to resolve the issues 
 - be it fixing the code, or excluding certain lines from being checked - and commit 
 again.
+
+:::
 
 
 ### Further reading: CI/CD
