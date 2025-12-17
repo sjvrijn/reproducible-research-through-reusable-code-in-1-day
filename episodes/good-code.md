@@ -225,6 +225,94 @@ pre-commit autoupdate
 and make sure to add and commit your updated config file.
 
 ### R
+
+Install the package `precommit` and initialize it. ⚠️ This package is only supported 
+on operating systems that are also officially supported by R. Please check the 
+[R Download page](https://cran.rstudio.org/) which ones are eligible. Non 
+long-term-stable (LTS) Ubuntu distributions, for example, are not. Installing and 
+running `precommit` on non-supported operating systems will probably require 
+extra manual work.
+
+```R
+install.packages("precommit")
+precommit::use_precommit()
+```
+
+RStudio will open the `.pre-commit-config.yaml` file for you to review. It will look 
+something like this:
+
+```yaml
+# All available hooks: https://pre-commit.com/hooks.html
+# R specific hooks: https://github.com/lorenzwalthert/precommit
+repos:
+-   repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.4.3.9017
+    hooks: 
+    -   id: style-files
+        args: [--style_pkg=styler, --style_fun=tidyverse_style]    
+    -   id: spell-check
+        exclude: >
+          (?x)^(
+          .*\.[rR]|
+          .*\.feather|
+          .*\.jpeg|
+          .*\.pdf|
+          .*\.png|
+          .*\.py|
+          .*\.RData|
+          .*\.rds|
+          .*\.Rds|
+          .*\.Rproj|
+          .*\.sh|
+          (.*/|)\.gitignore|
+          (.*/|)\.gitlab-ci\.yml|
+          (.*/|)\.lintr|
+          (.*/|)\.pre-commit-.*|
+          (.*/|)\.Rbuildignore|
+          (.*/|)\.Renviron|
+          (.*/|)\.Rprofile|
+          (.*/|)\.travis\.yml|
+          (.*/|)appveyor\.yml|
+          (.*/|)NAMESPACE|
+          (.*/|)renv/settings\.dcf|
+          (.*/|)renv\.lock|
+          (.*/|)WORDLIST|
+          \.github/workflows/.*|
+          data/.*|
+          )$
+    -   id: lintr
+    -   id: readme-rmd-rendered
+    -   id: parsable-R
+    -   id: no-browser-statement
+    -   id: no-debug-statement
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks: 
+    -   id: check-added-large-files
+        args: ['--maxkb=200']
+    -   id: end-of-file-fixer
+        exclude: '\.Rd'
+-   repo: https://github.com/pre-commit-ci/pre-commit-ci-config
+    rev: v1.6.1
+    hooks:
+    # Only required when https://pre-commit.ci is used for config validation
+    -   id: check-pre-commit-ci-config
+-   repo: local
+    hooks:
+    -   id: forbid-to-commit
+        name: Don't commit common R artifacts
+        entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
+        language: fail
+        files: '\.(Rhistory|RData|Rds|rds)$'
+        # `exclude: <regex>` to allow committing specific files
+
+ci:
+    autoupdate_schedule: monthly
+```
+
+You can comment out `-  repo:`- or `-  id:` stanzas if you don't want them, or add new 
+ones if you want more checks to happen before you commit files.
+
 <!-- Head over to [the Tidyverse style guide](https://style.tidyverse.org/){target="_blank"}.  
 
 Then take a look at (a part of) your own R script, and identify where the guidelines 
@@ -244,7 +332,14 @@ https://www.r-bloggers.com/2022/09/enforcing-style-in-an-r-project/
 
 :::
 
-**Further reading: CI/CD**
+:::
+
+⚠️ Failed pre-commit checks will also fail the commit! Make sure to resolve the issues 
+- be it fixing the code, or excluding certain lines from being checked - and commit 
+again.
+
+
+### Further reading: CI/CD
 
 We went from running formatting and linting locally to automating the checks for 
 every commit. This still leaves a margin for error since your collaborators will 
@@ -254,15 +349,16 @@ is CI/CD (Continuous Integration / Continuous Delivery).
 It goes beyond the scope of this module, but you can set up your remote repository 
 such that every push (or pull/merge request) triggers a set of checks. For GitHub it 
 is named [GitHub Actions](https://docs.github.com/en/actions), while GitLab just calls 
-it [CI/CD](https://docs.gitlab.com/ci/).
+it [CI/CD](https://docs.gitlab.com/ci/). It is useful beyond just code style; other 
+common usecases include automated testing (even on different platforms, like Linux, Windows 
+or MacOS), compilation and packaging, deployment, benchmarking, security checks... 
+There is a whole [marketplace](https://github.com/marketplace) for reusing CI/CD 
+recipes.
 
 Usually the tools you use will supply instructions on how to run them in this automated way. 
 Check out [`ruff` integrations](https://docs.astral.sh/ruff/integrations/) for Python, 
 or [`lintr` integrations](https://github.com/r-lib/lintr/?tab=readme-ov-file#setting-up-github-actions) 
 and [`styler` integrations](https://github.com/r-lib/actions/tree/v2-branch/examples#style-package) for R.
-
-
-:::
 
 ## Modular coding 
 
