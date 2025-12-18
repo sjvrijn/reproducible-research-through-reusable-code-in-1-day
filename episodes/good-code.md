@@ -359,7 +359,8 @@ recipes.
 Usually the tools you use will supply instructions on how to run them in this automated way. 
 Check out [`ruff` integrations](https://docs.astral.sh/ruff/integrations/) for Python, 
 or [`lintr` integrations](https://github.com/r-lib/lintr/?tab=readme-ov-file#setting-up-github-actions) 
-and [`styler` integrations](https://github.com/r-lib/actions/tree/v2-branch/examples#style-package) for R.
+and [`styler` integrations](https://github.com/r-lib/actions/tree/v2-branch/examples#style-package) for R. 
+Both [rely on the `usethis`](https://usethis.r-lib.org/reference/use_github_action.html) package.
 
 ## Modular coding 
 
