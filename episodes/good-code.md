@@ -66,13 +66,13 @@ dedicated classes, a few words should usually be enough: e.g.,
 other people's code for inspiration and ask for feedback on yours!
 
 Some generic advice for naming things:
+
 1. Follow the style guide for your language/codebase
 2. Variables and classes are nouns, functions are verbs
 3. Avoid single letters or abbreviations if possible
 4. When in doubt, it is better to be overly specific than too general
-5. Try to specify detail in the outer context instead
-6. Watch for keywords like `and` to indicate you may want to refactor your code
-7. Ask what meaning others get from your names. What would they suggest instead?
+5. Watch for keywords like `and` to indicate that a function can be split
+6. Ask what meaning others get from your names. What would they suggest instead?
 
 ### Improving your code
 
