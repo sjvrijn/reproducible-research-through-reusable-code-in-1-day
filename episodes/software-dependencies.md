@@ -150,7 +150,9 @@ much better: branches such as `main` are still a moving target.
 can recreate the software environment required for the project. One problem
 with the dependencies that come from GitHub is that they might have disappeared
 (what if their authors deleted these repositories?). Besides that, version
-numbers are preferable over arbitrary tags.
+numbers give a better idea of progress compared to arbitrary tags. From a
+simple list, there is no clear ordering between two tags `with-some-feature` or
+`used-for-this-paper`, while version `2.0.0` is obviously newer than `1.2.3`.
 
 :::
 
