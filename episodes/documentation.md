@@ -39,6 +39,8 @@ For a more extensive description of what should be in a README, have a look at
 [README template](https://www.makeareadme.com/#template-1){target="_blank"} that
 you can use to get started.
 
+For a primer on what Markdown is and how it works, check out the [Markdown Guide](https://www.markdownguide.org/getting-started/). They also have a more concise [Cheatsheet](https://www.markdownguide.org/cheat-sheet/) listing the most common syntax elements.
+
 ::: challenge
 ### Exercise README: Draft or improve a README for your project
 
